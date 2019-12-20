@@ -1,3 +1,5 @@
+from day01.common import *
+
 # --- Day 1: The Tyranny of the Rocket Equation ---
 #
 # Santa has become stranded at the edge of the Solar System while delivering presents to other
@@ -30,14 +32,7 @@
 #
 # What is the sum of the fuel requirements for all of the modules on your spacecraft?
 
-def calculate_fuel(module_mass):
-    return module_mass // 3 - 2
-
-def read_input(file_name):
-    with open(file_name, 'r') as f:
-        return [int(line) for line in f.readlines()]
 
 if __name__ == '__main__':
-    module_masses = read_input('input.txt')
-    summed_fuel = sum(map(calculate_fuel, module_masses))
+    summed_fuel = sum(map(calculate_fuel, get_module_masses()))
     print(summed_fuel)
