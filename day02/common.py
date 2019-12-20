@@ -17,7 +17,7 @@ def operate(l, start_index, f):
     l[destination] = f(a, b)
 
 
-def run_program(l, start_index):
+def run_program(l, start_index=0):
     if l[start_index] == 99:
         return l[0]
     elif len(l) < start_index + 4:
