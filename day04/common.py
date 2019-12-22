@@ -12,5 +12,5 @@ def condition2(number_array):
     return True
 
 
-def number_to_array(number):
-    return [number % 10 ** i // (10 ** (i - 1)) for i in range(6, 0, -1)]
+def number_to_array(number, length=6):
+    return [number % 10 ** i // (10 ** (i - 1)) for i in range(length, 0, -1)]

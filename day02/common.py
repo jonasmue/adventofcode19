@@ -8,13 +8,14 @@ def replace_positions(subsitutes, list):
         list[index] = value
 
 
-def operate(l, start_index, f):
-    idx_a = l[start_index + 1]
-    idx_b = l[start_index + 2]
-    a = l[idx_a]
-    b = l[idx_b]
-    destination = l[start_index + 3]
+def operate(l, pointer, f, mode_1=0, mode_2=0, mode_3=0):
+    idx_a = l[pointer + 1]
+    idx_b = l[pointer + 2]
+    destination = pointer + 3 if mode_3 else l[pointer + 3]
+    a = idx_a if mode_1 else l[idx_a]
+    b = idx_b if mode_2 else l[idx_b]
     l[destination] = f(a, b)
+    return pointer + 4
 
 
 def run_program(l, start_index=0):
@@ -23,8 +24,8 @@ def run_program(l, start_index=0):
     elif l[start_index] == 99:
         return l[0]
     elif l[start_index] == 1:
-        operate(l, start_index, lambda a, b: a + b)
+        start_index = operate(l, start_index, lambda a, b: a + b)
     elif l[start_index] == 2:
-        operate(l, start_index, lambda a, b: a * b)
+        start_index = operate(l, start_index, lambda a, b: a * b)
 
-    return run_program(l, start_index + 4)
+    return run_program(l, start_index)
