@@ -3,4 +3,4 @@ from day05.common import *
 
 if __name__ == '__main__':
     l = get_input('input.txt')
-    run_program(l, 5)
+    Computer().run_program(l, [5])
