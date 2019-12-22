@@ -11,7 +11,7 @@ def parse_opcode(opcode):
     return op, mode_1, mode_2, mode_3
 
 
-def operate_save(l, pointer, mode_1, input):
+def operate_input(l, pointer, mode_1, input):
     destination = pointer + 1 if mode_1 else l[pointer + 1]
     l[destination] = input
     return pointer + 2
@@ -24,7 +24,7 @@ def operate_output(l, pointer, mode_1):
     return pointer + 2
 
 
-def jump(l, pointer, mode_1, mode_2, if_true):
+def operate_jump(l, pointer, mode_1, mode_2, if_true):
     idx_a = l[pointer + 1]
     idx_b = l[pointer + 2]
     a = idx_a if mode_1 else l[idx_a]
@@ -47,13 +47,13 @@ def run_program(l, input_id, pointer=0):
     elif op == 2:
         pointer = operate(l, pointer, lambda a, b: a * b, mode_1, mode_2, mode_3)
     elif op == 3:
-        pointer = operate_save(l, pointer, mode_1, input_id)
+        pointer = operate_input(l, pointer, mode_1, input_id)
     elif op == 4:
         pointer = operate_output(l, pointer, mode_1)
     elif op == 5:
-        pointer = jump(l, pointer, mode_1, mode_2, True)
+        pointer = operate_jump(l, pointer, mode_1, mode_2, True)
     elif op == 6:
-        pointer = jump(l, pointer, mode_1, mode_2, False)
+        pointer = operate_jump(l, pointer, mode_1, mode_2, False)
     elif op == 7:
         pointer = operate(l, pointer, lambda a, b: int(a < b), mode_1, mode_2, mode_3)
     elif op == 8:
