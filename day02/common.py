@@ -18,14 +18,14 @@ def operate(l, pointer, f, mode_1=0, mode_2=0, mode_3=0):
     return pointer + 4
 
 
-def run_program(l, start_index=0):
-    if len(l) <= start_index or len(l) < start_index + 4:
+def run_program(l, pointer=0):
+    if len(l) <= pointer or len(l) < pointer + 4:
         return -1
-    elif l[start_index] == 99:
+    elif l[pointer] == 99:
         return l[0]
-    elif l[start_index] == 1:
-        start_index = operate(l, start_index, lambda a, b: a + b)
-    elif l[start_index] == 2:
-        start_index = operate(l, start_index, lambda a, b: a * b)
+    elif l[pointer] == 1:
+        pointer = operate(l, pointer, lambda a, b: a + b)
+    elif l[pointer] == 2:
+        pointer = operate(l, pointer, lambda a, b: a * b)
 
-    return run_program(l, start_index)
+    return run_program(l, pointer)

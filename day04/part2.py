@@ -27,7 +27,7 @@ def condition3(number_array):
 
 
 def check_password(number):
-    number_array = number_to_array(number)
+    number_array = number_to_array(number, 6)
     return condition1(number_array) and condition2(number_array) and condition3(number_array)
 
 
