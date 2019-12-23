@@ -59,12 +59,12 @@ class Computer():
         self.pointer += 2
 
     def operate_jump(self, mode_1, mode_2, if_true):
-        idx_a = self.program[self.pointer + 1]
-        idx_b = self.program[self.pointer + 2]
-        a = self.get_read_value(mode_1, idx_a)
-        b = self.get_read_value(mode_2, idx_b)
-        if (if_true and a) or (not (if_true) and not (a)):
-            self.pointer = b
+        idx_flag = self.program[self.pointer + 1]
+        idx_destination = self.program[self.pointer + 2]
+        flag = self.get_read_value(mode_1, idx_flag)
+        destination = self.get_read_value(mode_2, idx_destination)
+        if (if_true and flag) or (not if_true and not flag):
+            self.pointer = destination
         else:
             self.pointer += 3
 
@@ -80,34 +80,32 @@ class Computer():
         self.pointer += 2
 
     def run_program(self):
-
-        if len(self.program) <= self.pointer:
-            return
-
-        op, mode_1, mode_2, mode_3 = self.parse_opcode()
-
-        if op == 99:
-            self.is_finished = True
-            return
-        elif op == 1:
-            self.operate(lambda a, b: a + b, mode_1, mode_2, mode_3)
-        elif op == 2:
-            self.operate(lambda a, b: a * b, mode_1, mode_2, mode_3)
-        elif op == 3:
-            if self.input_pointer >= len(self.inputs):
+        while True:
+            if len(self.program) <= self.pointer:
                 return
-            self.operate_input(mode_1)
-        elif op == 4:
-            self.operate_output(mode_1)
-        elif op == 5:
-            self.operate_jump(mode_1, mode_2, True)
-        elif op == 6:
-            self.operate_jump(mode_1, mode_2, False)
-        elif op == 7:
-            self.operate(lambda a, b: int(a < b), mode_1, mode_2, mode_3)
-        elif op == 8:
-            self.operate(lambda a, b: int(a == b), mode_1, mode_2, mode_3)
-        elif op == 9:
-            self.operate_relative_pointer(mode_1)
 
-        return self.run_program()
+            op, mode_1, mode_2, mode_3 = self.parse_opcode()
+
+            if op == 99:
+                self.is_finished = True
+                return
+            elif op == 1:
+                self.operate(lambda a, b: a + b, mode_1, mode_2, mode_3)
+            elif op == 2:
+                self.operate(lambda a, b: a * b, mode_1, mode_2, mode_3)
+            elif op == 3:
+                if self.input_pointer >= len(self.inputs):
+                    return
+                self.operate_input(mode_1)
+            elif op == 4:
+                self.operate_output(mode_1)
+            elif op == 5:
+                self.operate_jump(mode_1, mode_2, True)
+            elif op == 6:
+                self.operate_jump(mode_1, mode_2, False)
+            elif op == 7:
+                self.operate(lambda a, b: int(a < b), mode_1, mode_2, mode_3)
+            elif op == 8:
+                self.operate(lambda a, b: int(a == b), mode_1, mode_2, mode_3)
+            elif op == 9:
+                self.operate_relative_pointer(mode_1)
