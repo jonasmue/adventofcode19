@@ -29,7 +29,7 @@ class Computer():
     def get_write_index(self, mode, index):
         if mode == 0:
             return self.program[index]
-        if mode == 1:
+        elif mode == 1:
             return index
         elif mode == 2:
             return self.program[index] + self.relative_base
