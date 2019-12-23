@@ -9,7 +9,7 @@ class Computer():
         self.input_pointer = 0
         self.program = program
         self.pointer = 0
-        self.is_done = False
+        self.is_finished = False
 
     def parse_opcode(self):
         array = number_to_array(self.program[self.pointer], 5)
@@ -57,8 +57,9 @@ class Computer():
             return
 
         op, mode_1, mode_2, mode_3 = self.parse_opcode()
+
         if op == 99:
-            self.is_done = True
+            self.is_finished = True
             return
         elif op == 1:
             self.operate(lambda a, b: a + b, mode_1, mode_2, mode_3)
