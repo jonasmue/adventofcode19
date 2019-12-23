@@ -1,3 +1,4 @@
+from collections import defaultdict
 from day04.common import number_to_array
 
 
@@ -7,9 +8,28 @@ class Computer():
         self.outputs = []
         self.inputs = inputs
         self.input_pointer = 0
-        self.program = program
         self.pointer = 0
+        self.relative_base = 0
         self.is_finished = False
+        self.program = defaultdict(int)
+        for i, item in enumerate(program):
+            self.program[i] = item
+
+    def get_read_value(self, mode, index):
+        if mode == 0:
+            return self.program[index]
+        elif mode == 1:
+            return index
+        elif mode == 2:
+            return self.program[self.relative_base + index]
+
+    def get_write_index(self, mode, index):
+        if mode == 1:
+            return index
+        destination = self.program[index]
+        if mode == 2:
+            destination += self.relative_base
+        return destination
 
     def parse_opcode(self):
         array = number_to_array(self.program[self.pointer], 5)
@@ -22,33 +42,38 @@ class Computer():
     def operate(self, f, mode_1=0, mode_2=0, mode_3=0):
         idx_a = self.program[self.pointer + 1]
         idx_b = self.program[self.pointer + 2]
-        destination = self.pointer + 3 if mode_3 else self.program[self.pointer + 3]
-        a = idx_a if mode_1 else self.program[idx_a]
-        b = idx_b if mode_2 else self.program[idx_b]
+        a = self.get_read_value(mode_1, idx_a)
+        b = self.get_read_value(mode_2, idx_b)
+        destination = self.get_write_index(mode_3, self.pointer + 3)
         self.program[destination] = f(a, b)
         self.pointer += 4
 
     def operate_output(self, mode_1):
-        idx_a = self.program[self.pointer + 1]
-        a = idx_a if mode_1 else self.program[idx_a]
-        self.outputs.append(a)
-        print(a)
+        idx = self.program[self.pointer + 1]
+        value = self.get_read_value(mode_1, idx)
+        self.outputs.append(value)
+        print(value)
         self.pointer += 2
 
     def operate_jump(self, mode_1, mode_2, if_true):
         idx_a = self.program[self.pointer + 1]
         idx_b = self.program[self.pointer + 2]
-        a = idx_a if mode_1 else self.program[idx_a]
-        b = idx_b if mode_2 else self.program[idx_b]
+        a = self.get_read_value(mode_1, idx_a)
+        b = self.get_read_value(mode_2, idx_b)
         if (if_true and a) or (not (if_true) and not (a)):
             self.pointer = b
         else:
             self.pointer += 3
 
     def operate_input(self, mode_1):
-        destination = self.pointer + 1 if mode_1 else self.program[self.pointer + 1]
+        destination = self.get_write_index(mode_1, self.pointer + 1)
         self.program[destination] = self.inputs[self.input_pointer]
         self.input_pointer += 1
+        self.pointer += 2
+
+    def operate_relative_pointer(self, mode_1):
+        idx = self.program[self.pointer + 1]
+        self.relative_base += self.get_read_value(mode_1, idx)
         self.pointer += 2
 
     def run_program(self):
@@ -79,5 +104,7 @@ class Computer():
             self.operate(lambda a, b: int(a < b), mode_1, mode_2, mode_3)
         elif op == 8:
             self.operate(lambda a, b: int(a == b), mode_1, mode_2, mode_3)
+        elif op == 9:
+            self.operate_relative_pointer(mode_1)
 
         return self.run_program()
