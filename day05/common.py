@@ -11,6 +11,9 @@ class Computer():
         self.pointer = 0
         self.relative_base = 0
         self.is_finished = False
+        self.init_program(program)
+
+    def init_program(self, program):
         self.program = defaultdict(int)
         for i, item in enumerate(program):
             self.program[i] = item
@@ -24,12 +27,12 @@ class Computer():
             return self.program[self.relative_base + index]
 
     def get_write_index(self, mode, index):
+        if mode == 0:
+            return self.program[index]
         if mode == 1:
             return index
-        destination = self.program[index]
-        if mode == 2:
-            destination += self.relative_base
-        return destination
+        elif mode == 2:
+            return self.program[index] + self.relative_base
 
     def parse_opcode(self):
         array = number_to_array(self.program[self.pointer], 5)
