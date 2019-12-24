@@ -1,6 +1,7 @@
 import unittest
 from day10.common import *
 from day10.part1 import calculate_max_asteroid
+from day10.part2 import get_nth_vaporized_asteroid
 
 
 class TestPart1(unittest.TestCase):
@@ -35,6 +36,15 @@ class TestPart1(unittest.TestCase):
         n, p = calculate_max_asteroid(asteroids)
         self.assertEqual(correct_n, n)
         self.assertEqual(correct_point, p)
+
+
+class TestPart2(unittest.TestCase):
+    def test1(self):
+        asteroids = get_input('test4.txt')
+        correct_point = Vector(8, 2)
+        _, p = calculate_max_asteroid(asteroids)
+        actual_point = get_nth_vaporized_asteroid(asteroids, p)
+        self.assertEqual(correct_point, actual_point)
 
 
 if __name__ == '__main__':
