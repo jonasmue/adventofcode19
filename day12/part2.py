@@ -5,12 +5,24 @@ def get_x_positions(moons):
     return [m.position.x for m in moons]
 
 
+def get_x_velocities(moons):
+    return [m.velocity.x for m in moons]
+
+
 def get_y_positions(moons):
     return [m.position.y for m in moons]
 
 
+def get_y_velocities(moons):
+    return [m.velocity.y for m in moons]
+
+
 def get_z_positions(moons):
     return [m.position.z for m in moons]
+
+
+def get_z_velocities(moons):
+    return [m.velocity.z for m in moons]
 
 
 def greatest_common_divisor(a, b):
@@ -27,30 +39,15 @@ def least_common_multiple(a, b):
 
 
 def check_x_positions(moons, init_x):
-    for i, m in enumerate(moons):
-        if m.position.x != init_x[i]:
-            return False
-        if m.velocity.x != 0:
-            return False
-    return True
+    return get_x_positions(moons) == init_x and get_x_velocities(moons) == [0 for _ in range(len(moons))]
 
 
 def check_y_positions(moons, init_y):
-    for i, m in enumerate(moons):
-        if m.position.y != init_y[i]:
-            return False
-        if m.velocity.y != 0:
-            return False
-    return True
+    return get_y_positions(moons) == init_y and get_y_velocities(moons) == [0 for _ in range(len(moons))]
 
 
 def check_z_positions(moons, init_z):
-    for i, m in enumerate(moons):
-        if m.position.z != init_z[i]:
-            return False
-        if m.velocity.z != 0:
-            return False
-    return True
+    return get_z_positions(moons) == init_z and get_z_velocities(moons) == [0 for _ in range(len(moons))]
 
 
 if __name__ == '__main__':
