@@ -56,9 +56,9 @@ def get_input(file_name):
         moons = []
         for i, line in enumerate(f.readlines()):
             split = line.strip().split(',')
-            x = int(split[0].split('=')[1])
-            y = int(split[1].split('=')[1])
-            z = int(split[2].split('=')[1][:-1])
+            x = float(split[0].split('=')[1])
+            y = float(split[1].split('=')[1])
+            z = float(split[2].split('=')[1][:-1])
             m = Moon(i, Vector(x, y, z))
             moons.append(m)
         return moons

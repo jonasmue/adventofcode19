@@ -10,8 +10,8 @@ def build_position_matrix(moons):
 
 
 def efficient_update_velocity(position_matrix, velocity_matrix, gravity_matrix):
-    sorted_indices = position_matrix.argsort(axis=0)
-    # TODO Sort gravities by indices
+    sorted_indices = np.argsort(position_matrix.argsort(axis=0), axis=0)
+    sorted_gravities = -np.take_along_axis(gravity_matrix, sorted_indices, 0)
     print("Hej!")
 
 
